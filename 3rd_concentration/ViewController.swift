@@ -21,6 +21,8 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var flipCountLabel: UILabel!
     
+    @IBOutlet weak var scoreLabel: UILabel!
+    
     @IBOutlet var cardButtons: [UIButton]!
     
 
@@ -32,6 +34,7 @@ class ViewController: UIViewController {
         flipCount += 1
         if let cardNumber = cardButtons.index(of: sender) {
             game.chooseCard(at: cardNumber)
+            scoreLabel.text = "Score: \(game.scores)"
             updateViewFromModel()
         } else {
            print("chosen card wass not in cardButtons")
@@ -72,18 +75,23 @@ class ViewController: UIViewController {
     }
     
     var emoji = [Int:String]()
-
+    
     func emoji(for card: Card) -> String {
+        game.chosenBefore = Array(emoji.keys)
         if emoji[card.identifier] == nil, emojiChoices.count > 0 {
             let randomIndex = Int(arc4random_uniform(UInt32(emojiChoices.count)))
             emoji[card.identifier] = emojiChoices.remove(at: randomIndex)
         }
+        print("Opend identifier : \(game.chosenBefore)")
+        print("Opend identifier : \(emoji)")
         return emoji[card.identifier] ?? "?"
     }
     
     //TODO: "New Game" button
     @IBAction func startNewGame(_ sender: UIButton) {
         flipCount = 0
+        game.scores = 0
+        scoreLabel.text = "Score: 0"
         emoji = [Int:String]()
         chooseThemes(at: 1)
         let randomIndex = Int(arc4random_uniform(UInt32(game.cards.count)))
@@ -97,7 +105,6 @@ class ViewController: UIViewController {
             game.cards[index].isFaceUp = false
             game.cards[index].isMatched = false
             game.indexOfOneAndOnlyFaceUpCard = nil
-            
         }
     }
 }

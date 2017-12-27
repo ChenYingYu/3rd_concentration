@@ -13,7 +13,11 @@ class Concentration
     var cards = [Card]()
     
     var indexOfOneAndOnlyFaceUpCard: Int?
-    
+    //TODO: Score rules
+    var scores = 0
+    //TODO: Penalize
+    var chosenBefore = [Int]()
+
     func chooseCard(at index: Int) {
         if !cards[index].isMatched {
             if let matchIndex = indexOfOneAndOnlyFaceUpCard, matchIndex != index {
@@ -21,6 +25,14 @@ class Concentration
                 if cards[matchIndex].identifier == cards[index].identifier {
                     cards[matchIndex].isMatched = true
                     cards[index].isMatched = true
+                    scores += 2
+                    print("matched identifier = \(cards[index].identifier)")
+                } else {
+                    for chosenIdentifier in chosenBefore.indices {
+                        if cards[index].identifier == chosenBefore[chosenIdentifier] || cards[matchIndex].identifier == chosenBefore[chosenIdentifier] {
+                            scores -= 1
+                        }
+                    }
                 }
                 cards[index].isFaceUp = true
                 indexOfOneAndOnlyFaceUpCard = nil
