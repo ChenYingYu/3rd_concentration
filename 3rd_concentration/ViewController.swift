@@ -13,12 +13,6 @@ class ViewController: UIViewController {
     //Make contact to Model "Concentration"
     lazy var game = Concentration(numberOfPairOfCards: (cardButtons.count + 1) / 2)
     
-    var flipCount = 0 {
-        didSet {
-            flipCountLabel.text = "Flips: \(flipCount)"
-        }
-    }
-    
     @IBOutlet weak var flipCountLabel: UILabel!
     
     @IBOutlet weak var scoreLabel: UILabel!
@@ -31,7 +25,8 @@ class ViewController: UIViewController {
         if checkChosenTheme == 0 {
             chooseThemes(at: 1)
         }
-        flipCount += 1
+        game.flipCount += 1
+        flipCountLabel.text = "Flips: \(game.flipCount)"
         if let cardNumber = cardButtons.index(of: sender) {
             game.chooseCard(at: cardNumber)
             scoreLabel.text = "Score: \(game.scores)"
@@ -89,8 +84,9 @@ class ViewController: UIViewController {
     
     //TODO: "New Game" button
     @IBAction func startNewGame(_ sender: UIButton) {
-        flipCount = 0
+        game.flipCount = 0
         game.scores = 0
+        flipCountLabel.text = "Flips: 0"
         scoreLabel.text = "Score: 0"
         emoji = [Int:String]()
         chooseThemes(at: 1)
