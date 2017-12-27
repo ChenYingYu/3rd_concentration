@@ -11,7 +11,12 @@ import UIKit
 class ViewController: UIViewController {
 
     //Make contact to Model "Concentration"
-    lazy var game = Concentration(numberOfPairOfCards: (cardButtons.count + 1) / 2)
+    lazy var game = Concentration(numberOfPairOfCards: numberOfPairOfCards)
+    
+    var numberOfPairOfCards: Int {
+        return (cardButtons.count+1 / 2)
+    }
+    
     
     @IBOutlet weak var flipCountLabel: UILabel!
     
