@@ -11,22 +11,22 @@ import UIKit
 class ViewController: UIViewController {
 
     //Make contact to Model "Concentration"
-    lazy var game = Concentration(numberOfPairOfCards: numberOfPairOfCards)
+    private lazy var game = Concentration(numberOfPairOfCards: numberOfPairOfCards)
     
     var numberOfPairOfCards: Int {
         return (cardButtons.count+1 / 2)
     }
     
     
-    @IBOutlet weak var flipCountLabel: UILabel!
+    @IBOutlet private weak var flipCountLabel: UILabel!
     
-    @IBOutlet weak var scoreLabel: UILabel!
+    @IBOutlet private weak var scoreLabel: UILabel!
     
-    @IBOutlet var cardButtons: [UIButton]!
+    @IBOutlet private var cardButtons: [UIButton]!
     
 
 
-    @IBAction func touchCard(_ sender: UIButton) {
+    @IBAction private func touchCard(_ sender: UIButton) {
         if checkChosenTheme == 0 {
             chooseThemes(at: 1)
         }
@@ -41,7 +41,7 @@ class ViewController: UIViewController {
         }
     }
     
-    func updateViewFromModel() {
+    private func updateViewFromModel() {
         for index in cardButtons.indices {
             let button = cardButtons[index]
             let card = game.cards[index]
@@ -59,7 +59,7 @@ class ViewController: UIViewController {
     var checkChosenTheme = 0
     
     //TODO: Make 6 themes
-    var emojiChoices = [String]()
+    private var emojiChoices = [String]()
     func chooseThemes(at index: Int) {
         var themeIndex = index
         checkChosenTheme = 1
@@ -74,16 +74,14 @@ class ViewController: UIViewController {
         emojiChoices = Array(theme.values)[themeIndex]
     }
     
-    var emoji = [Int:String]()
+    private var emoji = [Int:String]()
     
-    func emoji(for card: Card) -> String {
+    private func emoji(for card: Card) -> String {
         game.chosenBefore = Array(emoji.keys)
         if emoji[card.identifier] == nil, emojiChoices.count > 0 {
             let randomIndex = Int(arc4random_uniform(UInt32(emojiChoices.count)))
             emoji[card.identifier] = emojiChoices.remove(at: randomIndex)
         }
-        print("Opend identifier : \(game.chosenBefore)")
-        print("Opend identifier : \(emoji)")
         return emoji[card.identifier] ?? "?"
     }
     

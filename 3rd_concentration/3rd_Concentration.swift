@@ -40,6 +40,7 @@ class Concentration
     var chosenBefore = [Int]()
 
     func chooseCard(at index: Int) {
+        assert(cards.indices.contains(index), "3rd_Contration.chooseCard(at: \(index)): chosen index not in the cards")
         if !cards[index].isMatched {
             if let matchIndex = indexOfOneAndOnlyFaceUpCard, matchIndex != index {
                 // check if cards match
@@ -47,7 +48,6 @@ class Concentration
                     cards[matchIndex].isMatched = true
                     cards[index].isMatched = true
                     scores += 2
-                    print("matched identifier = \(cards[index].identifier)")
                 } else {
                     for chosenIdentifier in chosenBefore.indices {
                         if cards[index].identifier == chosenBefore[chosenIdentifier] || cards[matchIndex].identifier == chosenBefore[chosenIdentifier] {
@@ -65,6 +65,7 @@ class Concentration
     
     // Adding pairs of cards
     init(numberOfPairOfCards: Int) {
+        assert(numberOfPairOfCards > 0, "3rd_Contration.init(\(numberOfPairOfCards)): you must have at least one pair of cards")
         for _ in 1...numberOfPairOfCards {
             let card = Card()
             cards += [card, card]
