@@ -79,8 +79,7 @@ class ViewController: UIViewController {
     private func emoji(for card: Card) -> String {
         game.chosenBefore = Array(emoji.keys)
         if emoji[card.identifier] == nil, emojiChoices.count > 0 {
-            let randomIndex = Int(arc4random_uniform(UInt32(emojiChoices.count)))
-            emoji[card.identifier] = emojiChoices.remove(at: randomIndex)
+            emoji[card.identifier] = emojiChoices.remove(at: emojiChoices.count.arc4random)
         }
         return emoji[card.identifier] ?? "?"
     }
@@ -93,7 +92,7 @@ class ViewController: UIViewController {
         scoreLabel.text = "Score: 0"
         emoji = [Int:String]()
         chooseThemes(at: 1)
-        let randomIndex = Int(arc4random_uniform(UInt32(game.cards.count)))
+        let randomIndex = game.cards.count.arc4random
         let shuffleCard = game.cards[0]
         game.cards[0] = game.cards[randomIndex]
         game.cards[randomIndex] = shuffleCard
@@ -104,6 +103,18 @@ class ViewController: UIViewController {
             game.cards[index].isFaceUp = false
             game.cards[index].isMatched = false
             game.indexOfOneAndOnlyFaceUpCard = nil
+        }
+    }
+}
+
+extension Int {
+    var arc4random: Int {
+        if self > 0 {
+            return Int(arc4random_uniform(UInt32(self)))
+        } else if self < 0{
+            return -Int(arc4random_uniform(UInt32(abs(self))))
+        } else {
+            return 0
         }
     }
 }
