@@ -14,7 +14,7 @@ class ViewController: UIViewController {
     private lazy var game = Concentration(numberOfPairOfCards: numberOfPairOfCards)
     
     var numberOfPairOfCards: Int {
-        return (cardButtons.count+1 / 2)
+        return ((cardButtons.count+1) / 2)
     }
     
     
@@ -80,6 +80,7 @@ class ViewController: UIViewController {
         game.chosenBefore = Array(emoji.keys)
         if emoji[card.identifier] == nil, emojiChoices.count > 0 {
             emoji[card.identifier] = emojiChoices.remove(at: emojiChoices.count.arc4random)
+            print(emojiChoices)
         }
         return emoji[card.identifier] ?? "?"
     }
