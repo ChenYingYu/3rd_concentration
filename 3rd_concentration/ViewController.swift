@@ -74,15 +74,15 @@ class ViewController: UIViewController {
         emojiChoices = Array(theme.values)[themeIndex]
     }
     
-    private var emoji = [Int:String]()
+    private var emoji = [Card:String]()
     
     private func emoji(for card: Card) -> String {
         game.chosenBefore = Array(emoji.keys)
-        if emoji[card.identifier] == nil, emojiChoices.count > 0 {
-            emoji[card.identifier] = emojiChoices.remove(at: emojiChoices.count.arc4random)
+        if emoji[card] == nil, emojiChoices.count > 0 {
+            emoji[card] = emojiChoices.remove(at: emojiChoices.count.arc4random)
             print(emojiChoices)
         }
-        return emoji[card.identifier] ?? "?"
+        return emoji[card] ?? "?"
     }
     
     //TODO: "New Game" button
@@ -91,7 +91,7 @@ class ViewController: UIViewController {
         game.scores = 0
         flipCountLabel.text = "Flips: 0"
         scoreLabel.text = "Score: 0"
-        emoji = [Int:String]()
+        emoji = [Card:String]()
         chooseThemes(at: 1)
         let randomIndex = game.cards.count.arc4random
         let shuffleCard = game.cards[0]

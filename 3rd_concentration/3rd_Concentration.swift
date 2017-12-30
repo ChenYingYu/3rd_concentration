@@ -37,20 +37,20 @@ struct Concentration
     //TODO: Score rules
     var scores = 0
     //TODO: Penalize
-    var chosenBefore = [Int]()
+    var chosenBefore = [Card]()
 
     mutating func chooseCard(at index: Int) {
         assert(cards.indices.contains(index), "3rd_Contration.chooseCard(at: \(index)): chosen index not in the cards")
         if !cards[index].isMatched {
             if let matchIndex = indexOfOneAndOnlyFaceUpCard, matchIndex != index {
                 // check if cards match
-                if cards[matchIndex].identifier == cards[index].identifier {
+                if cards[matchIndex] == cards[index] {
                     cards[matchIndex].isMatched = true
                     cards[index].isMatched = true
                     scores += 2
                 } else {
                     for chosenIdentifier in chosenBefore.indices {
-                        if cards[index].identifier == chosenBefore[chosenIdentifier] || cards[matchIndex].identifier == chosenBefore[chosenIdentifier] {
+                        if cards[index] == chosenBefore[chosenIdentifier] || cards[matchIndex] == chosenBefore[chosenIdentifier] {
                             scores -= 1
                         }
                     }
