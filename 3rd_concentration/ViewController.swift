@@ -18,20 +18,38 @@ class ViewController: UIViewController {
     }
     
     
-    @IBOutlet private weak var flipCountLabel: UILabel!
+    @IBOutlet private weak var flipCountLabel: UILabel! {
+        didSet {
+            updateFlipCountLabel()
+        }
+    }
     
     @IBOutlet private weak var scoreLabel: UILabel!
     
-    @IBOutlet private var cardButtons: [UIButton]!
-    
-
-
-    @IBAction private func touchCard(_ sender: UIButton) {
-        if checkChosenTheme == 0 {
-            chooseThemes(at: 1)
+    @IBOutlet private var cardButtons: [UIButton]! {
+        didSet {
+            chooseThemes()
         }
-        game.flipCount += 1
-        flipCountLabel.text = "Flips: \(game.flipCount)"
+    }
+    
+    private func updateFlipCountLabel() {
+        let attributes: [NSAttributedStringKey:Any] = [
+            .strokeWidth: 5.0,
+            .strokeColor: #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
+        ]
+        let attributedString = NSAttributedString(string: "Flips: \(flipCount)", attributes: attributes)
+        flipCountLabel.attributedText = attributedString
+    }
+    
+    var flipCount = 0 {
+        didSet {
+            updateFlipCountLabel()
+        }
+    }
+    
+    @IBAction private func touchCard(_ sender: UIButton) {
+        flipCount += 1
+        //flipCountLabel.text = "Flips: \(game.flipCount)"
         if let cardNumber = cardButtons.index(of: sender) {
             game.chooseCard(at: cardNumber)
             scoreLabel.text = "Score: \(game.scores)"
@@ -60,9 +78,7 @@ class ViewController: UIViewController {
     
     //TODO: Make 6 themes
     private var emojiChoices = ""
-    func chooseThemes(at index: Int) {
-        var themeIndex = index
-        checkChosenTheme = 1
+    func chooseThemes() {
         let theme = ["sports": "⚽️🏀🏈⚾️🎾🏐🏉🎱🏓🏸",
                      "cars": "🚗🚕🚙🚌🚎🏎🚓🚑🚒🚐",
                      "halloween": "👻🎃🍭🍬👿🦇🍎😱🙀☠",
@@ -70,7 +86,7 @@ class ViewController: UIViewController {
                      "animals": "🐶🐭🐹🐼🐸🐷🐔🦄🦊🦁",
                      "fruits": "🍉🍇🍓🍋🥝🍒🍊🍌🍎🍑"]
         let themeKeys = Array(theme.keys)
-        themeIndex = Int(arc4random_uniform(UInt32(themeKeys.count)))
+        let themeIndex = Int(arc4random_uniform(UInt32(themeKeys.count)))
         emojiChoices = String(Array(theme.values)[themeIndex])
     }
     
@@ -88,12 +104,12 @@ class ViewController: UIViewController {
     
     //TODO: "New Game" button
     @IBAction func startNewGame(_ sender: UIButton) {
-        game.flipCount = 0
+        flipCount = 0
         game.scores = 0
         flipCountLabel.text = "Flips: 0"
         scoreLabel.text = "Score: 0"
         emoji = [Card:String]()
-        chooseThemes(at: 1)
+        chooseThemes()
         let randomIndex = game.cards.count.arc4random
         let shuffleCard = game.cards[0]
         game.cards[0] = game.cards[randomIndex]

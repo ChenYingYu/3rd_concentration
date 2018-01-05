@@ -11,9 +11,7 @@ import Foundation
 struct Concentration
 {
     var cards = [Card]()
-    
-    var flipCount = 0
-    
+        
     var indexOfOneAndOnlyFaceUpCard: Int? {
         get {
             var foundIndex: Int?
